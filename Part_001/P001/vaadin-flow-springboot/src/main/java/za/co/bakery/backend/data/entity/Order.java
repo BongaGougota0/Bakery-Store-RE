@@ -1,23 +1,41 @@
 package za.co.bakery.backend.data.entity;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import org.hibernate.annotations.BatchSize;
 import za.co.bakery.backend.data.OrderState;
-
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-@Entity
+@Entity(name = "OrderInfo")
+@Table(indexes = @Index(columnList = "dueDate"))
 public class Order extends AbstractDataEntity implements OrderSummary{
 
-    @NotNull
+    @NotNull(message = "Due time cannot be null.")
     private LocalTime dueTime;
+    @NotNull(message = "Due date cant be null.")
     private LocalDate dueDate;
+    @NotNull
+    @ManyToOne(cascade = CascadeType.ALL)
     private Customer customer;
+    @NotNull
+    @ManyToOne
     private PickUpLocation pickUpLocation;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OrderColumn
+    @JoinColumn
+    @BatchSize(size = 1000)
+    @NotEmpty
+    @Valid
     private List<OrderItem> itemList;
+    @NotNull(message = "Cant be null")
     private OrderState orderState;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OrderColumn
+    @JoinColumn
     private List<HistoryItem> historyItems;
 
     public Order() {

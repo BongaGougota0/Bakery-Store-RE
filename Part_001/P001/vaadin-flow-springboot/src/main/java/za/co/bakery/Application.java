@@ -1,11 +1,13 @@
 package za.co.bakery;
 
-import com.vaadin.flow.component.page.AppShellConfigurator;
-import com.vaadin.flow.server.PWA;
-import com.vaadin.flow.theme.Theme;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
 
 /**
  * The entry point of the Spring Boot application.
@@ -15,9 +17,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  */
 @SpringBootApplication
-@PWA(name = "Project Base for Vaadin with Spring", shortName = "Project Base")
-@Theme("my-theme")
-public class Application implements AppShellConfigurator {
+@EnableJpaRepositories("za.co.bakery.backend.repository")
+@EntityScan("za.co.bakery.backend.data.entity")
+public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

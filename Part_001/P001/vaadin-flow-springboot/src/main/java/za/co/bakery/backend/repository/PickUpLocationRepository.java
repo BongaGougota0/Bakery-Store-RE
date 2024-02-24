@@ -2,7 +2,8 @@ package za.co.bakery.backend.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import za.co.bakery.backend.data.entity.HistoryItem;
+import za.co.bakery.backend.data.entity.PickUpLocation;
+
 @Repository
-public interface HistoryItemRepository extends JpaRepository<HistoryItem, Long> {
+public interface PickUpLocationRepository extends JpaRepository<PickUpLocation, Long> {
 }

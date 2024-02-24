@@ -1,17 +1,15 @@
 package za.co.bakery.backend.data.entity;
 
 import jakarta.persistence.Entity;
-import lombok.Data;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-@Data
 @Entity
+@Setter
+@Getter
 public class OrderItem extends AbstractDataEntity{
     private Product product;
     @Min(1)

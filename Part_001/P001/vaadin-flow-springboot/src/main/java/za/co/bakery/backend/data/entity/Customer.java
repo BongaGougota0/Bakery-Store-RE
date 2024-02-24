@@ -1,14 +1,17 @@
 package za.co.bakery.backend.data.entity;
 
 import jakarta.persistence.Entity;
-import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+
 
 @Entity
-@Data
+@Getter
+@Setter
 public class Customer extends AbstractDataEntity{
     @NotBlank
     @Size(max=255)

@@ -2,13 +2,14 @@ package za.co.bakery.backend.data.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
-@Data
 @Entity
+@Setter
+@Getter
 public class PickUpLocation extends AbstractDataEntity{
     @Size(max = 200)
     @NotBlank

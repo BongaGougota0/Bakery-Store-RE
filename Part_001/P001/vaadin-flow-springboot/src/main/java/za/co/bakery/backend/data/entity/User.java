@@ -2,13 +2,12 @@ package za.co.bakery.backend.data.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
-@Entity
+@Entity(name = "UserInfo")
 @Getter
 @Setter
 public class User extends AbstractDataEntity{
