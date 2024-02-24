@@ -1,62 +1,73 @@
 package za.co.bakery.ui;
 
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasComponents;
+import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.TabVariant;
+import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.auth.AccessAnnotationChecker;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import za.co.bakery.ui.views.storefront.StoreFrontView;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * A sample Vaadin view class.
- * <p>
- * To implement a Vaadin view just extend any Vaadin component and use @Route
- * annotation to announce it in a URL as a Spring managed bean.
- * <p>
- * A new instance of this class is created for every new user and every browser
- * tab/window.
- * <p>
- * The main view contains a text field for getting the user name and a button
- * that shows a greeting message in a notification.
- */
 @Route
-public class MainView extends VerticalLayout {
+public class MainView extends AppLayout {
+    @Autowired
+     private AccessAnnotationChecker accessAnnotationChecker;
+    private final ConfirmDialog confirmDialog = new ConfirmDialog();
+    private Tabs tabsMenu;
+    private static final String LOGOUT_ACCESS_URL = "/" + "";
 
-    /**
-     * Construct a new Vaadin view.
-     * <p>
-     * Build the initial UI state for the user accessing the application.
-     *
-     * @param service
-     *            The message service. Automatically injected Spring managed
-     *            bean.
-     */
-    public MainView(@Autowired GreetService service) {
+    @PostConstruct
+    public void init(){
+        confirmDialog.setCancelable(true);
+        confirmDialog.setConfirmButtonTheme("raised tertiary error.");
+        confirmDialog.setCancelButtonTheme("raised tertiary");
 
-        // Use TextField for standard text input
-        TextField textField = new TextField("Your name");
-        textField.addThemeName("bordered");
+        this.setDrawerOpened(false);
+        Span appName = new Span("Bakery Store RE");
+        //Add class name
 
-        // Button click listeners can be defined as lambda expressions
-        Button button = new Button("Say hello",
-                e -> Notification.show(service.greet(textField.getValue())));
+        tabsMenu = createMenuTabs();
+    }
 
-        // Theme variants give you predefined extra styles for components.
-        // Example: Primary button has a more prominent look.
-        button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+    private Tabs createMenuTabs() {
+        final Tabs tabs = new Tabs();
+        tabs.setOrientation(Tabs.Orientation.HORIZONTAL);
+        tabs.add(getAvailableTabs());
+        return tabs;
+    }
 
-        // You can specify keyboard shortcuts for buttons.
-        // Example: Pressing enter in this view clicks the Button.
-        button.addClickShortcut(Key.ENTER);
+    private Tab[] getAvailableTabs(){
+        final List<Tab> tabList = new ArrayList<>(4);
+        tabList.add(createTab(VaadinIcon.EDIT, "BAKERY_TITLE", StoreFrontView.class));
+//        tabList.add(createTab(VaadinIcon.CLOCK, "Dashboard_TITLE",));
+        return tabList.toArray(new Tab[tabList.size()]);
+    }
 
-        // Use custom CSS classes to apply styling. This is defined in
-        // shared-styles.css.
-        addClassName("centered-content");
+    private static Tab createTab(VaadinIcon icon, String title, Class<? extends Component> viewClass){
+        return createTab(populateLink(new RouterLink("", viewClass),icon,title));
+    }
 
-        add(textField, button);
+    private static Tab createTab(Component component){
+        final Tab tab = new Tab();
+        tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
+        tab.add(component);
+        return tab;
+    }
+
+    private static <T extends HasComponents> T populateLink(T a,VaadinIcon icon, String title){
+        a.add(icon.create());
+        a.add(title);
+        return a;
     }
 
 }
