@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 import za.co.bakery.backend.data.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+    User findByEmailIgnoreCase(String email);
 }

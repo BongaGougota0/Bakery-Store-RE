@@ -5,6 +5,8 @@
 .project
 .classpath
 
+P001/vaadin-flow-springboot/src/main/bundles/*
+
 *.iml
 .DS_Store
 
