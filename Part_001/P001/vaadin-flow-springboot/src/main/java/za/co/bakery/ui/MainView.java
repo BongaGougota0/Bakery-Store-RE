@@ -18,7 +18,6 @@ import za.co.bakery.ui.views.storefront.StoreFrontView;
 import java.util.ArrayList;
 import java.util.List;
 
-@Route
 public class MainView extends AppLayout {
     @Autowired
      private AccessAnnotationChecker accessAnnotationChecker;
