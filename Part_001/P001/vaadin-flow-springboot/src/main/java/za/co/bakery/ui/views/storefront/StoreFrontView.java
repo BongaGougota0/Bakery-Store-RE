@@ -22,7 +22,9 @@ import za.co.bakery.ui.views.orderedit.OrderEditor;
 @Tag("storefront-view")
 @PageTitle("Bakery Store View")
 @PermitAll
-public class StoreFrontView extends LitTemplate implements BeforeEnterObserver, HasLogger, EntityView<Order> {
+public class StoreFrontView
+        extends LitTemplate
+        implements BeforeEnterObserver, HasLogger, EntityView<Order> {
 
     @Id("search")
     private SearchBar searchBar;
