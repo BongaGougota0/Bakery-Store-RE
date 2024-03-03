@@ -7,4 +7,5 @@
 Project development
 ## Branches
 
-- Part_003 => changes made/added etc...
+- Part_002 => progression from Part_001
+
