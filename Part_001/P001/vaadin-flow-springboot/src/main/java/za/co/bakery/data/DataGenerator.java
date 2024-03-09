@@ -46,7 +46,7 @@ public class DataGenerator implements HasLogger {
     @PostConstruct
     public void loadData(){
         getLogger().info("Run this method to insert demo data.");
-        createAdminUser(this.userRepository,this.passwordEncoder);
+        createAdminUser(userRepository,passwordEncoder);
         getLogger().info("Admin user created.");
     }
 
