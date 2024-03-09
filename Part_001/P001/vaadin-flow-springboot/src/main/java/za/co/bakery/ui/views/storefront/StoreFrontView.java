@@ -30,7 +30,9 @@ import javax.swing.*;
 @RouteAlias(value = BakeryConstants.PAGE_STOREFRONT_ORDER_EDIT_TEMPLATE, layout = MainView.class)
 @RouteAlias(value = BakeryConstants.PAGE_ROOT, layout = MainView.class)
 @PermitAll
-public class StoreFrontView extends LitTemplate implements BeforeEnterObserver, HasLogger, EntityView<Order> {
+public class StoreFrontView
+        extends LitTemplate
+        implements BeforeEnterObserver, HasLogger, EntityView<Order> {
 
     @Id("search")
     private SearchBar searchBar;
