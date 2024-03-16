@@ -5,6 +5,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import za.co.bakery.app.HasLogger;
 import za.co.bakery.backend.data.Role;
+import za.co.bakery.backend.data.entity.Order;
 import za.co.bakery.backend.data.entity.PickUpLocation;
 import za.co.bakery.backend.data.entity.Product;
 import za.co.bakery.backend.data.entity.User;
@@ -13,6 +14,8 @@ import za.co.bakery.backend.repository.PickUpLocationRepository;
 import za.co.bakery.backend.repository.ProductRepository;
 import za.co.bakery.backend.repository.UserRepository;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,8 +49,58 @@ public class DataGenerator implements HasLogger {
     @PostConstruct
     public void loadData(){
         getLogger().info("Run this method to insert demo data.");
-        createAdminUser(userRepository,passwordEncoder);
+
         getLogger().info("Admin user created.");
+        User adminUser = createAdminUser(userRepository,passwordEncoder);
+        User user = createUser("bongaxaba98@outlook.com", "Bonga","Gougota",
+                "12345678", "user",false);
+
+        getLogger().info("Add products......");
+        Supplier<Product> productSupplier = createProducts(productRepository,10);
+
+        getLogger().info("Create pick up locations.....");
+        Supplier<PickUpLocation> pickUpLocationSupplier = createPickUpLocations(pickUpLocation);
+
+        getLogger().info("Generate orders....");
+        createOrders(orderRepository, productSupplier, pickUpLocationSupplier, adminUser, user);
+    }
+
+    private void createOrders(OrderRepository orderRepository,
+                                         Supplier<Product> productSupplier,
+                                         Supplier<PickUpLocation> pickUpLocationSupplier,
+                                         User adminUser, User user) {
+
+        int yearsToInclude = 2;
+        LocalDate now = LocalDate.now();
+        LocalDate oldestDate = LocalDate.of(now.getYear() - yearsToInclude, 1, 1);
+        LocalDate newestDate = now.plusMonths(1L);
+
+        Order order = createOrder(productSupplier, pickUpLocationSupplier, adminUser, user, now);
+        order.setDueTime(LocalTime.of(8, 0));
+        order.setHistoryItems(order.getHistoryItems().subList(0, 1));
+        order.setItemList(order.getOrderItems().subList(0,1));
+        orderRepository.save(order);
+
+        for (LocalDate dueDate = oldestDate; dueDate.isBefore(newestDate); dueDate = dueDate.plusDays(1)) {
+            int relativeYear = dueDate.getYear() - now.getYear() + yearsToInclude;
+            int relativeMonth = relativeYear * 12 + dueDate.getMonthValue();
+            double multiplier = 1.0 + 0.03 * relativeMonth;
+            int ordersThisDay = (int) (random.nextInt(10) + 1 * multiplier);
+            for (int i = 0; i < ordersThisDay; i++) {
+                orderRepository.save(createOrder(productSupplier, pickUpLocationSupplier,
+                        adminUser, user, dueDate));
+            }
+        }
+    }
+
+    private Order createOrder(Supplier<Product> productSupplier, Supplier<PickUpLocation> pickUpLocationSupplier, User adminUser, User user, LocalDate now) {
+    }
+
+    private Supplier<PickUpLocation> createPickUpLocations(PickUpLocationRepository pickUpLocation) {
+        List<PickUpLocation> pickUpLocationList = Arrays.asList(
+                pickUpLocation.save(createPickUpLocation("Boxer")),
+                pickUpLocation.save(createPickUpLocation("Makro")));
+                return () -> pickUpLocationList.get(random.nextInt(pickUpLocationList.size()));
     }
 
     private Supplier<Product> createProducts(ProductRepository productRepository, int numberOfItems){
@@ -118,8 +171,8 @@ public class DataGenerator implements HasLogger {
         return user;
     }
 
-    private void createAdminUser(UserRepository userRepository, PasswordEncoder passwordEncoder){
-        userRepository.save(createUser("bonga@admin.com","Bonga", "Gougota",
+    private User createAdminUser(UserRepository userRepository, PasswordEncoder passwordEncoder){
+        return userRepository.save(createUser("bonga@admin.com","Bonga", "Gougota",
                 passwordEncoder.encode("@ZXCp0001"), "admin",true));
     }
 

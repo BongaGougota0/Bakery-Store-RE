@@ -3,6 +3,8 @@ package za.co.bakery.backend.data.entity;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
 import za.co.bakery.backend.data.OrderState;
 import jakarta.validation.constraints.NotNull;
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Entity(name = "OrderInfo")
 @Table(indexes = @Index(columnList = "dueDate"))
+@Getter
+@Setter
 public class Order extends AbstractDataEntity implements OrderSummary{
 
     @NotNull(message = "Due time cannot be null.")
