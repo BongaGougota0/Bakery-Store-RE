@@ -13,6 +13,6 @@ public interface OrderSummary {
     List<OrderItem> getOrderItems();
     LocalDate getDueDate();
     LocalTime getDueTime();
-    PickUpLocation getLocation();
+    PickupLocation getLocation();
     Integer getTotalPrice();
 }

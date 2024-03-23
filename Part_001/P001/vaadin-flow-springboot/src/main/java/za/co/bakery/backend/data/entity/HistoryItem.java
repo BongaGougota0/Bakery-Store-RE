@@ -20,6 +20,12 @@ public class HistoryItem extends AbstractDataEntity{
     private String message;
     @NotBlank
     private LocalDateTime timeStamp;
+
+    public HistoryItem(User createdBy,String message) {
+        this.message = message;
+        this.createdBy = createdBy;
+    }
+
     @NotNull
     private User createdBy;
 
@@ -31,6 +37,10 @@ public class HistoryItem extends AbstractDataEntity{
     }
 
     public HistoryItem() {
+    }
+
+    public  void setNewState(OrderState orderState){
+        this.orderState = orderState;
     }
 
 }

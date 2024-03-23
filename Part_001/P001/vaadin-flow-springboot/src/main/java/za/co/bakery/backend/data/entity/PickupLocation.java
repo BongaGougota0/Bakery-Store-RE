@@ -10,7 +10,7 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
-public class PickUpLocation extends AbstractDataEntity{
+public class PickupLocation extends AbstractDataEntity{
     @Size(max = 200)
     @NotBlank
     @Column(unique = true)

@@ -1,9 +1,9 @@
 package za.co.bakery.backend.data;
 
 public class Role {
-    private static final String WAITER = "Waiter";
-    private static final String ADMIN = "Admin";
-    private static final String BAKER = "Baker";
+    public static final String WAITER = "Waiter";
+    public static final String ADMIN = "Admin";
+    public static final String BAKER = "Baker";
 
     private Role(){}
 

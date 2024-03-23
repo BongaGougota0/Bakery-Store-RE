@@ -10,9 +10,33 @@ import lombok.Setter;
 
 
 @Entity
-@Getter
-@Setter
+//@Getter
+//@Setter
 public class Customer extends AbstractDataEntity{
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
     @NotBlank
     @Size(max=255)
     private String fullName;
