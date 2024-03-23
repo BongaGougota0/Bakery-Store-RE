@@ -7,10 +7,10 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity(name = "pickupLocation")
+@Entity
 @Setter
 @Getter
-public class PickUpLocation extends AbstractDataEntity{
+public class PickupLocation extends AbstractDataEntity{
     @Size(max = 200)
     @NotBlank
     @Column(unique = true)

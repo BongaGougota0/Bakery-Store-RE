@@ -11,7 +11,7 @@ import za.co.bakery.backend.data.entity.Customer;
 import za.co.bakery.backend.data.entity.HistoryItem;
 import za.co.bakery.backend.data.entity.Order;
 import za.co.bakery.backend.data.entity.OrderItem;
-import za.co.bakery.backend.data.entity.PickUpLocation;
+import za.co.bakery.backend.data.entity.PickupLocation;
 import za.co.bakery.backend.data.entity.Product;
 import za.co.bakery.backend.data.entity.User;
 import za.co.bakery.backend.repository.OrderRepository;
@@ -19,7 +19,6 @@ import za.co.bakery.backend.repository.PickUpLocationRepository;
 import za.co.bakery.backend.repository.ProductRepository;
 import za.co.bakery.backend.repository.UserRepository;
 
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -77,7 +76,7 @@ public class DataGenerator implements HasLogger {
         createProducts(productRepository, 4);
 
         getLogger().info("Create pick up locations.....");
-        Supplier<PickUpLocation> pickUpLocationSupplier = createPickUpLocations(pickUpLocation);
+        Supplier<PickupLocation> pickUpLocationSupplier = createPickUpLocations(pickUpLocation);
 
         getLogger().info("Generate orders....");
         createOrders(orderRepository, productSupplier, pickUpLocationSupplier, waiter, baker);
@@ -107,7 +106,7 @@ public class DataGenerator implements HasLogger {
 
     private void createOrders(OrderRepository orderRepository,
                                          Supplier<Product> productSupplier,
-                                         Supplier<PickUpLocation> pickUpLocationSupplier,
+                                         Supplier<PickupLocation> pickUpLocationSupplier,
                                          User adminUser, User user) {
 
         int yearsToInclude = 2;
@@ -134,7 +133,7 @@ public class DataGenerator implements HasLogger {
     }
 
     private Order createOrder(Supplier<Product> productSupplier,
-                              Supplier<PickUpLocation> pickUpLocationSupplier,
+                              Supplier<PickupLocation> pickUpLocationSupplier,
                               User adminUser, User user, LocalDate now) {
         Order order = new Order(adminUser);
 
@@ -278,8 +277,8 @@ public class DataGenerator implements HasLogger {
     public String getRandomPhone(){
         return "+2776-385-"+String.format("%04d", random.nextInt(10000));
     }
-    private Supplier<PickUpLocation> createPickUpLocations(PickUpLocationRepository pickUpLocation) {
-        List<PickUpLocation> pickUpLocationList = Arrays.asList(
+    private Supplier<PickupLocation> createPickUpLocations(PickUpLocationRepository pickUpLocation) {
+        List<PickupLocation> pickUpLocationList = Arrays.asList(
                 pickUpLocation.save(createPickUpLocation("Boxer")),
                 pickUpLocation.save(createPickUpLocation("Makro")));
                 return () -> pickUpLocationList.get(random.nextInt(pickUpLocationList.size()));
@@ -305,16 +304,16 @@ public class DataGenerator implements HasLogger {
         };
     }
 
-    private Supplier<PickUpLocation> pickUpLocations(PickUpLocationRepository pickUpLocationRepository){
-        List<PickUpLocation> pickUpLocations = Arrays.asList(
+    private Supplier<PickupLocation> pickUpLocations(PickUpLocationRepository pickUpLocationRepository){
+        List<PickupLocation> pickUpLocations = Arrays.asList(
                 pickUpLocationRepository.save(createPickUpLocation("Store")),
                 pickUpLocationRepository.save(createPickUpLocation("Pick-Up"))
         );
         return () -> pickUpLocations.get(random.nextInt(pickUpLocations.size()-1));
     }
 
-    private PickUpLocation createPickUpLocation(String name){
-        PickUpLocation pickUpLocation = new PickUpLocation();
+    private PickupLocation createPickUpLocation(String name){
+        PickupLocation pickUpLocation = new PickupLocation();
         pickUpLocation.setName(name);
         return pickUpLocation;
     }

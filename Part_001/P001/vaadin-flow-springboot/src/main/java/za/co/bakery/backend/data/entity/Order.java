@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
 import za.co.bakery.backend.data.OrderState;
 import jakarta.validation.constraints.NotNull;
@@ -43,7 +42,7 @@ public class Order extends AbstractDataEntity implements OrderSummary{
     @Getter
     @NotNull
     @ManyToOne
-    private PickUpLocation pickUpLocation;
+    private PickupLocation pickUpLocation;
 
     @Getter
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
@@ -87,7 +86,7 @@ public class Order extends AbstractDataEntity implements OrderSummary{
         this.dueDate = dueDate;
     }
 
-    public void setPickUpLocation(PickUpLocation pickUpLocation) {
+    public void setPickUpLocation(PickupLocation pickUpLocation) {
         this.pickUpLocation = pickUpLocation;
     }
 
@@ -134,7 +133,7 @@ public class Order extends AbstractDataEntity implements OrderSummary{
     }
 
     @Override
-    public PickUpLocation getLocation() {
+    public PickupLocation getLocation() {
         return null;
     }
 
