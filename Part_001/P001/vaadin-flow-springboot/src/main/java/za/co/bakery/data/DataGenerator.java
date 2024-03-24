@@ -64,7 +64,6 @@ public class DataGenerator implements HasLogger {
         getLogger().info("Run this method to insert demo data.");
 
         getLogger().info("Admin user created.");
-        User admin = createAdmin(userRepository,passwordEncoder);
         User waiter = createWaiter(userRepository,passwordEncoder);
         User baker = createBaker(userRepository,passwordEncoder);
         createAdminUser(userRepository,passwordEncoder);
@@ -107,14 +106,14 @@ public class DataGenerator implements HasLogger {
     private void createOrders(OrderRepository orderRepository,
                                          Supplier<Product> productSupplier,
                                          Supplier<PickupLocation> pickUpLocationSupplier,
-                                         User adminUser, User user) {
+                                         User customer, User user) {
 
         int yearsToInclude = 2;
         LocalDate now = LocalDate.now();
         LocalDate oldestDate = LocalDate.of(now.getYear() - yearsToInclude, 1, 1);
         LocalDate newestDate = now.plusMonths(1L);
 
-        Order order = createOrder(productSupplier, pickUpLocationSupplier, adminUser, user, now);
+        Order order = createOrder(productSupplier, pickUpLocationSupplier, customer, user, now);
         order.setDueTime(LocalTime.of(8, 0));
         order.setHistoryItems(order.getHistoryItems().subList(0, 1));
         order.setItemList(order.getOrderItems().subList(0,1));
@@ -127,19 +126,19 @@ public class DataGenerator implements HasLogger {
             int ordersThisDay = (int) (random.nextInt(10) + 1 * multiplier);
             for (int i = 0; i < ordersThisDay; i++) {
                 orderRepository.save(createOrder(productSupplier, pickUpLocationSupplier,
-                        adminUser, user, dueDate));
+                        customer, user, dueDate));
             }
         }
     }
 
     private Order createOrder(Supplier<Product> productSupplier,
                               Supplier<PickupLocation> pickUpLocationSupplier,
-                              User adminUser, User user, LocalDate now) {
+                              User adminUser, User user, LocalDate dueDate) {
         Order order = new Order(adminUser);
 
         fillCustomer(order.getCustomer());
         order.setPickUpLocation(pickUpLocationSupplier.get());
-        order.setDueDate(now);
+        order.setDueDate(dueDate);
         order.setDueTime(getRandomDueTime());
         order.changeState(adminUser, getRandomState(order.getDueDate()));
 
@@ -299,8 +298,8 @@ public class DataGenerator implements HasLogger {
             g = Math.min(cutOff, g);
             g = Math.max(-cutOff, g);
             g += cutOff;
-            g /= (cutOff *2);
-            return products.get((int)(g*products.size()-1));
+            g /= (cutOff *2.0);
+            return products.get((int)(g*(products.size()-1)));
         };
     }
 

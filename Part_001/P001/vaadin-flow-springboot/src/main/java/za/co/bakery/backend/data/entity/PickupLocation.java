@@ -8,11 +8,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Setter
-@Getter
 public class PickupLocation extends AbstractDataEntity{
     @Size(max = 200)
     @NotBlank
     @Column(unique = true)
     private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

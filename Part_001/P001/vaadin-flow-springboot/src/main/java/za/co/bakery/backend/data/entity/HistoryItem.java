@@ -1,6 +1,7 @@
 package za.co.bakery.backend.data.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -14,11 +15,13 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 public class HistoryItem extends AbstractDataEntity{
+
     private OrderState orderState;
     @NotBlank
     @Size(max = 255)
     private String message;
-    @NotBlank
+
+    @NotNull
     private LocalDateTime timeStamp;
 
     public HistoryItem(User createdBy,String message) {
@@ -26,6 +29,7 @@ public class HistoryItem extends AbstractDataEntity{
         this.createdBy = createdBy;
     }
 
+    @ManyToOne
     @NotNull
     private User createdBy;
 

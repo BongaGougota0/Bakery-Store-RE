@@ -20,8 +20,8 @@ import java.util.List;
 }), @NamedEntityGraph(name=Order.ENTITY_GRAPH_FULL, attributeNodes =
         {@NamedAttributeNode("customer"),
         @NamedAttributeNode("pickupLocation"),
-        @NamedAttributeNode("items"),
-        @NamedAttributeNode("history")
+        @NamedAttributeNode("itemList"),
+        @NamedAttributeNode("historyItems")
         })})
 @Table(indexes = @Index(columnList = "dueDate"))
 public class Order extends AbstractDataEntity implements OrderSummary{
@@ -39,10 +39,9 @@ public class Order extends AbstractDataEntity implements OrderSummary{
     @OneToOne(cascade = CascadeType.ALL)
     private Customer customer;
 
-    @Getter
-    @NotNull
+    @NotNull(message = "Pickup location is required.")
     @ManyToOne
-    private PickupLocation pickUpLocation;
+    private PickupLocation pickupLocation;
 
     @Getter
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
@@ -87,7 +86,7 @@ public class Order extends AbstractDataEntity implements OrderSummary{
     }
 
     public void setPickUpLocation(PickupLocation pickUpLocation) {
-        this.pickUpLocation = pickUpLocation;
+        this.pickupLocation = pickUpLocation;
     }
 
     public void setItemList(List<OrderItem> itemList) {
@@ -104,37 +103,37 @@ public class Order extends AbstractDataEntity implements OrderSummary{
 
     @Override
     public Long getId() {
-        return null;
+        return getId();
     }
 
     @Override
     public OrderState getState() {
-        return null;
+        return orderState;
     }
 
     @Override
     public Customer getCustomer() {
-        return null;
+        return customer;
     }
 
     @Override
     public List<OrderItem> getOrderItems() {
-        return null;
+        return itemList;
     }
 
     @Override
     public LocalDate getDueDate() {
-        return null;
+        return dueDate;
     }
 
     @Override
     public LocalTime getDueTime() {
-        return null;
+        return dueTime;
     }
 
     @Override
     public PickupLocation getLocation() {
-        return null;
+        return pickupLocation;
     }
 
     @Override
